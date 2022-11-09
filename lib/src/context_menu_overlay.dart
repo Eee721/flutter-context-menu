@@ -18,9 +18,14 @@ class ContextMenuOverlay extends StatefulWidget {
     this.cardBuilder,
     this.buttonBuilder,
     this.dividerBuilder,
+    this.activeColor,
+    this.blockPointer = true,
     this.buttonStyle = const ContextMenuButtonStyle(),
   }) : super(key: key);
   final Widget child;
+
+  final Color? activeColor;
+  final bool blockPointer;
 
   /// Builds a card that wraps all the buttons in the menu.
   final ContextMenuCardBuilder? cardBuilder;
@@ -83,14 +88,19 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                     widget.child,
                     // Show the menu?
                     if (menuToShow != null) ...[
-                      Positioned.fill(child: Container(color: Colors.transparent)),
+                      if (widget.activeColor != null)IgnorePointer(child : Positioned.fill(child: Container(color: widget.activeColor))),
 
                       /// Underlay, blocks all taps to the main content.
-                      GestureDetector(
+                      if (widget.blockPointer) GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onPanStart: (_) => hide(),
                         onTap: () => hide(),
                         onSecondaryTapDown: (_) => hide(),
+                        // onSecondaryTapUp: (_) => {
+                        //   Future.delayed(Duration(milliseconds: 8)).then((value) {
+                        //     show(menuToShow);
+                        //   }),
+                        // },
                         child: Container(),
                       ),
 

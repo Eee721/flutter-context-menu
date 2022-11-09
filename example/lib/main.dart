@@ -44,6 +44,7 @@ class StyledMenuTests extends StatelessWidget {
     return Container(
       color: Colors.green.shade200,
       child: ContextMenuOverlay(
+        blockPointer: false,
           buttonStyle: ContextMenuButtonStyle(
             fgColor: Colors.green,
             bgColor: Colors.green.shade100,
@@ -88,6 +89,7 @@ class TestContent extends StatelessWidget {
       color: Colors.transparent,
       child: Column(
         children: [
+
           /// Example menu for non-selectable text
           ContextMenuRegion(
             contextMenu: TextContextMenu(data: title),
@@ -116,6 +118,20 @@ class TestContent extends StatelessWidget {
             ),
             child: Image.network(_testImageUrl),
           ),
+
+          GestureDetector(
+            onSecondaryTapUp: (e){
+              context.contextMenuOverlay.show(ElevatedButton(onPressed: (){
+                ContextMenuOverlay.of(context).hide();
+              }, child: Text("test")));
+            },
+            child: Container(
+              width: 300,
+              height: 100,
+              color: Colors.redAccent,
+            ),
+          ),
+
         ],
       ),
     );
