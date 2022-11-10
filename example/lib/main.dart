@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:context_menus/context_menus.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,6 +63,34 @@ class CustomMenuTests extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    return Stack(
+      children: [
+        Container(color: Colors.blue.shade200,
+            child: GestureDetector(
+              onSecondaryTap: (){
+                print("onSecondaryTap");
+                ContextMenuOverlayController.getShow(Container(width: 200,height: 200,color: Colors.red,), tag:"main");
+              },
+              child: Container(width: 300 , height:  200, color: Colors.green,),
+            ),
+        ),
+        ContextMenuOverlay(
+          blockPointer: false,
+          getTag: "main",
+          /// Make a custom background
+          cardBuilder: (_, children) => Container(color: Colors.purple.shade100, child: Column(children: children)),
+
+          /// Make custom buttons
+          buttonBuilder: (_, config, [__]) => TextButton(
+            onPressed: config.onPressed,
+            child: SizedBox(width: double.infinity, child: Text(config.label)),
+          ),
+          child: Container(),
+        ),
+      ],
+    );
+
     return ContextMenuOverlay(
       /// Make a custom background
       cardBuilder: (_, children) => Container(color: Colors.purple.shade100, child: Column(children: children)),

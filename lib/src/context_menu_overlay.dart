@@ -1,7 +1,9 @@
 library context_menus;
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import 'ContextMenuOverlayController.dart';
 import 'widgets/context_menu_button.dart';
 import 'widgets/context_menu_card.dart';
 import 'widgets/context_menu_divider.dart';
@@ -20,10 +22,11 @@ class ContextMenuOverlay extends StatefulWidget {
     this.dividerBuilder,
     this.activeColor,
     this.blockPointer = true,
+    this.getTag,
     this.buttonStyle = const ContextMenuButtonStyle(),
   }) : super(key: key);
   final Widget child;
-
+  final String? getTag ;
   final Color? activeColor;
   final bool blockPointer;
 
@@ -62,6 +65,15 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
   ContextMenuButtonStyle get buttonStyle => widget.buttonStyle ?? defaultButtonStyle;
 
   @override
+  void initState() {
+    if (widget.getTag != null) {
+      var controller = ContextMenuOverlayController()..state = this ;
+      Get.put(controller, tag: widget.getTag);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (_, constraints) {
@@ -77,9 +89,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
 
         return _InheritedContextMenuOverlay(
             state: this,
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Listener(
+            child: Listener(
+              behavior:HitTestBehavior.translucent ,
                 onPointerDown: (e) => _mousePos = e.localPosition,
                 // Listen for Notifications coming up from the app
                 child: Stack(
@@ -91,11 +102,11 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                       if (widget.activeColor != null)IgnorePointer(child : Positioned.fill(child: Container(color: widget.activeColor))),
 
                       /// Underlay, blocks all taps to the main content.
-                      if (widget.blockPointer) GestureDetector(
+                      GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onPanStart: (_) => hide(),
                         onTap: () => hide(),
-                        onSecondaryTapDown: (_) => hide(),
+                        onSecondaryTapDown: (widget.blockPointer)? (_) => hide() : null,
                         // onSecondaryTapUp: (_) => {
                         //   Future.delayed(Duration(milliseconds: 8)).then((value) {
                         //     show(menuToShow);
@@ -121,7 +132,7 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                   ],
                 ),
               ),
-            ));
+            );
       },
     );
   }

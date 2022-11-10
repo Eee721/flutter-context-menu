@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'src/context_menu_overlay.dart';
 
 export 'src/menus/context_menu_state_mixin.dart';
+export 'src/ContextMenuOverlayController.dart';
 export 'src/menus/link_context_menu.dart';
 export 'src/menus/text_context_menu.dart';
 export 'src/menus/generic_context_menu.dart';
