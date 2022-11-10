@@ -16,7 +16,7 @@ import 'widgets/measure_size_widget.dart';
 class ContextMenuOverlay extends StatefulWidget {
   ContextMenuOverlay({
     Key? key,
-    required this.child,
+    this.child,
     this.cardBuilder,
     this.buttonBuilder,
     this.dividerBuilder,
@@ -25,7 +25,7 @@ class ContextMenuOverlay extends StatefulWidget {
     this.getTag,
     this.buttonStyle = const ContextMenuButtonStyle(),
   }) : super(key: key);
-  final Widget child;
+  final Widget? child;
   final String? getTag ;
   final Color? activeColor;
   final bool blockPointer;
@@ -96,7 +96,8 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
                 child: Stack(
                   children: [
                     // Child is the contents of the overlay, usually the entire app.
-                    widget.child,
+                    Container(),
+                    if (widget.child!= null) widget.child!,
                     // Show the menu?
                     if (menuToShow != null) ...[
                       if (widget.activeColor != null)IgnorePointer(child : Positioned.fill(child: Container(color: widget.activeColor))),
