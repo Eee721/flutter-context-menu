@@ -30,3 +30,5 @@ class ContextMenuOverlayController {
     ctrl.hide();
   }
 }
+
+typedef CmoC = ContextMenuOverlayController;
