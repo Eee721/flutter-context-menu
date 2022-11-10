@@ -70,6 +70,13 @@ class ContextMenuOverlayState extends State<ContextMenuOverlay> {
       var controller = ContextMenuOverlayController()..state = this ;
       Get.put(controller, tag: widget.getTag);
     }
+    else {
+      if (Get.isRegistered<ContextMenuOverlayController>()){
+        return ;
+      }
+      var controller  = ContextMenuOverlayController()..state = this ;
+      Get.put(controller);
+    }
     super.initState();
   }
 
