@@ -70,7 +70,7 @@ class CustomMenuTests extends StatelessWidget {
             child: GestureDetector(
               onSecondaryTap: (){
                 print("onSecondaryTap");
-                ContextMenuOverlayController.getShow(Container(width: 200,height: 200,color: Colors.red,), tag:"main");
+                CmoC.getShow(Container(width: 200,height: 200,color: Colors.red,), tag:"main");
               },
               child: Container(width: 300 , height:  200, color: Colors.green,),
             ),
